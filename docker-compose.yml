@@ -1,0 +1,30 @@
+services:
+  app:
+    container_name: jwt-microservice
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8888:8888"
+    command: ./main
+    depends_on:
+      cache:
+        condition: service_healthy
+    develop:
+      watch:
+        - action: rebuild
+          path: ./**/*.go
+
+  cache:
+    container_name: jwt-cache
+    image: redis:latest
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 1s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
