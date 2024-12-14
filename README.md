@@ -38,7 +38,7 @@ graph LR
 | --------------- | ------ | ------------------------ | ------------- |
 | `/ping`         | GET    | Health check endpoint    | No            |
 | `/login`        | POST   | Login and get token pair | No            |
-| `/refresh`      | POST   | Refresh token pair       | No            |
+| `/refresh`      | POST   | Refresh token pair       | Yes           |
 | `/logout`       | POST   | Invalidate token pair    | Yes           |
 | `/authenticate` | GET    | Validate access token    | Yes           |
 
