@@ -19,6 +19,8 @@ services:
           path: ./cmd
         - action: rebuild
           path: ./pkg
+        - action: rebuild
+          path: ./internal
 
   cache:
     container_name: jwt-cache
