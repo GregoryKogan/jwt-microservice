@@ -2,3 +2,15 @@ logging:
   # available modes: text, json
   mode: text
   level: debug
+
+cache:
+  host: cache
+  port: 6379
+
+auth:
+  issuer: jwt-microservice
+  access_lifetime: 15m
+  refresh_lifetime: 720h
+  auto_logout: 24h
+  passwords:
+    min_length: 8
