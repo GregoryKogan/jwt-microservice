@@ -10,4 +10,4 @@ COPY . .
 
 RUN go build -o main ./cmd/jwt-microservice/main.go
 
-EXPOSE 8888
+EXPOSE 8080

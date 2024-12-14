@@ -6,15 +6,19 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8888:8888"
+      - "8080:8080"
     command: ./main
     depends_on:
       cache:
         condition: service_healthy
+    secrets:
+      - jwt_key
     develop:
       watch:
         - action: rebuild
-          path: ./**/*.go
+          path: ./cmd
+        - action: rebuild
+          path: ./pkg
 
   cache:
     container_name: jwt-cache
@@ -28,3 +32,7 @@ services:
       timeout: 5s
       retries: 10
       start_period: 5s
+
+secrets:
+  jwt_key:
+    file: ./secrets/jwt_key.txt
