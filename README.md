@@ -18,7 +18,7 @@ A high-performance JWT authentication microservice written in Go, featuring Redi
 ```mermaid
 graph LR
     Client --> JWT[JWT Microservice]
-    JWT --> Redis[(Redis Cache)]
+    JWT --> Client
 
     subgraph JWT Microservice
         Handler --> Service
