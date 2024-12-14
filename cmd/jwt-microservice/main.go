@@ -3,6 +3,7 @@ package main
 import (
 	"log/slog"
 	"net/http"
+	"runtime"
 
 	"github.com/GregoryKogan/jwt-microservice/pkg/auth"
 	"github.com/GregoryKogan/jwt-microservice/pkg/cache"
@@ -15,6 +16,12 @@ import (
 func main() {
 	config.Init()
 	logging.Init()
+
+	maxProcs := viper.GetInt("server.max_processors")
+	if maxProcs > 0 {
+		runtime.GOMAXPROCS(maxProcs)
+		slog.Info("Processor configuration", slog.Int("max_procs", maxProcs), slog.Int("system_logical_procs", runtime.NumCPU()))
+	}
 
 	mux := http.NewServeMux()
 

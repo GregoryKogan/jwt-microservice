@@ -20,6 +20,10 @@ services:
           path: ./pkg
         - action: rebuild
           path: ./internal
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
 
   cache:
     container_name: jwt-cache
