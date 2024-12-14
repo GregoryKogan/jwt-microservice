@@ -17,11 +17,18 @@ A high-performance JWT authentication microservice written in Go, featuring Redi
 
 ```mermaid
 graph LR
-    Client --> Handler
-    subgraph JWT Microservice
-        Handler --> Service
-        Service --> Repository
-        Repository --> Redis[(Redis)]
+    Client --> NGINX[NGINX]
+    subgraph Docker Network
+        NGINX --> DNS[Docker DNS]
+        DNS --> JWT1[JWT Service 1]
+        DNS --> JWT2[JWT Service 2]
+        DNS --> JWT3[JWT Service n]
+    end
+    subgraph Shared State
+        direction LR
+        JWT1 --> Redis[(Redis)]
+        JWT2 --> Redis
+        JWT3 --> Redis
     end
 ```
 
@@ -43,28 +50,58 @@ graph LR
 - Docker
 - Docker Compose
 
+### Scaling
+
+The service supports horizontal scaling through Docker's built-in DNS-based load balancing:
+
+```bash
+docker compose up --build --scale jwt=5
+```
+
+This command will:
+
+- Start 5 instances of the JWT service
+- Register them with Docker's DNS service
+- Enable automatic load balancing through Docker's embedded DNS server
+- Maintain shared state through Redis
+
+The load balancing is handled by Docker's internal DNS resolver, which automatically distributes requests across all containers of the JWT service using round-robin DNS resolution. NGINX acts only as a reverse proxy, forwarding requests to the Docker DNS service which then routes them to the appropriate JWT service instance.
+
 ### Running Locally
 
 1. Clone the repository
 
 ```bash
-git clone https://github.com/yourusername/jwt-microservice.git
+git clone https://github.com/GregoryKogan/jwt-microservice.git
 cd jwt-microservice
 ```
 
-2. Start the service
+2. Choose a startup option:
+
+#### Single Instance
 
 ```bash
-docker compose --build up
+docker compose up --build
+```
+
+#### Multiple Instances (Scaled)
+
+```bash
+# Start 5 instances with load balancing
+docker compose up --build --scale jwt=5
 ```
 
 #### Development Mode
 
-To enable live-reloading, run the following command:
-
 ```bash
-docker compose --build up --watch
+# Live-reloading for single instance
+docker compose up --build --watch
+
+# Live-reloading with multiple instances
+docker compose up --build --watch --scale jwt=3
 ```
+
+The service will be available at `http://localhost:4000`.
 
 ### Configuration
 
