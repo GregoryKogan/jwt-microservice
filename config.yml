@@ -1,0 +1,4 @@
+logging:
+  # available modes: text, json
+  mode: text
+  level: debug

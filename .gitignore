@@ -25,4 +25,4 @@ go.work
 
 # secrets directory
 secrets/
-!internal/secrets/
+!pkg/secrets/
