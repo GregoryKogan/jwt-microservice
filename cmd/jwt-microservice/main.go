@@ -18,19 +18,20 @@ func main() {
 
 	mux := http.NewServeMux()
 
+	slog.Info("Initializing cache connection")
 	cache := cache.InitCacheConnection()
 
-	// 1. Initialize repos
+	slog.Info("Initializing repositories")
 	authRepo := auth.NewAuthRepo(cache)
 
-	// 2. Initialize services
+	slog.Info("Initializing services")
 	authService := auth.NewAuthService(authRepo)
 
-	// 3. Initialize handlers
+	slog.Info("Initializing handlers")
 	authHandler := auth.NewAuthHandler(authService)
 	pingHandler := ping.NewPingHandler()
 
-	// Register routes
+	slog.Info("Registering routes")
 	mux.HandleFunc("/ping", pingHandler.Ping)
 	mux.HandleFunc("/login", authHandler.Login)
 	mux.HandleFunc("/refresh", authHandler.Refresh)
@@ -38,7 +39,11 @@ func main() {
 	mux.HandleFunc("/authenticate", authHandler.Authenticate)
 
 	port := viper.GetString("server.port")
-	slog.Info("Starting server", slog.String("port", port))
+	slog.Info("Starting server",
+		slog.String("port", port),
+		slog.String("log_level", viper.GetString("logging.level")),
+	)
+
 	if err := http.ListenAndServe(":"+port, mux); err != nil {
 		slog.Error("Failed to start server", slog.Any("error", err))
 	}
