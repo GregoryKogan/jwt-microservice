@@ -37,6 +37,7 @@ services:
       timeout: 5s
       retries: 10
       start_period: 5s
+
   nginx:
     container_name: jwt-nginx
     restart: unless-stopped
@@ -47,6 +48,7 @@ services:
       - jwt
     ports:
       - "4000:4000"
+
   k6:
     container_name: jwt-k6
     build:
@@ -73,6 +75,7 @@ services:
       - load-test
     networks:
       - default
+
 secrets:
   jwt_key:
     file: ./secrets/jwt_key.txt
