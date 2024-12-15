@@ -109,6 +109,7 @@ The service is configured via `config.yml`:
 ```yaml
 server:
   port: 8080
+  max_processors: 2 # sets GOMAXPROCS
 
 logging:
   mode: text # text or json
@@ -124,6 +125,8 @@ auth:
   refresh_lifetime: 720h
   auto_logout: 24h
 ```
+
+Also, take a look at the `docker-compose.yml` file for more configuration options such as CPU resource limits and port mappings.
 
 ### ✅ Testing
 
