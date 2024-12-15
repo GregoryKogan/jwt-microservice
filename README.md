@@ -1,55 +1,55 @@
-# JWT Microservice
+# JWT Microservice &nbsp; ![License MIT](https://img.shields.io/badge/license-MIT-green) ![Docker Ready](https://img.shields.io/badge/docker-ready-blue) ![Go Version](https://img.shields.io/badge/Go-1.21-blue)
 
-A high-performance JWT authentication microservice written in Go, featuring Redis caching and Docker support.
+A high-performance **JWT authentication microservice** written in Go, featuring Redis caching and Docker support.
 
-## Features
+## 🚀 Features
 
-- 🔐 JWT-based authentication
-- 🚀 High-performance Redis caching
-- 🔄 Token refresh mechanism
-- 🔒 Auto-logout functionality
-- 📝 Structured logging
-- 🐳 Docker support
-- ⚡ Fast and lightweight
-- 🧪 Comprehensive test coverage
+- 🔐 **JWT-based authentication**
+- ⚡ **High-performance Redis caching**
+- ♻️ **Token refresh mechanism**
+- 🔒 **Auto-logout functionality**
+- 📝 **Structured logging**
+- 🐳 **Docker support**
+- 🌐 **Fast and lightweight**
+- 🧪 **Comprehensive test coverage**
 
-## Architecture
+## 🛠️ Architecture
 
 ```mermaid
 graph LR
-    Client --> NGINX[NGINX]
-    subgraph Docker Network
-        NGINX --> DNS[Docker DNS]
-        DNS --> JWT1[JWT Service 1]
-        DNS --> JWT2[JWT Service 2]
-        DNS --> JWT3[JWT Service n]
+    Client --> NGINX[🔀 NGINX]
+    subgraph 🐳 Docker Network
+        NGINX --> DNS[📡 Docker DNS]
+        DNS --> JWT1[🟢 JWT Service 1]
+        DNS --> JWT2[🟢 JWT Service 2]
+        DNS --> JWTn[🟢 JWT Service n]
     end
-    subgraph Shared State
+    subgraph 📂 Shared State
         direction LR
-        JWT1 --> Redis[(Redis)]
+        JWT1 --> Redis[(💾 Redis)]
         JWT2 --> Redis
-        JWT3 --> Redis
+        JWTn --> Redis
     end
 ```
 
-## API Endpoints
+## 📚 API Endpoints
 
 | Endpoint        | Method | Description              | Auth Required |
 | --------------- | ------ | ------------------------ | ------------- |
-| `/ping`         | GET    | Health check endpoint    | No            |
-| `/login`        | POST   | Login and get token pair | No            |
-| `/refresh`      | POST   | Refresh token pair       | Yes           |
-| `/logout`       | POST   | Invalidate token pair    | Yes           |
-| `/authenticate` | GET    | Validate access token    | Yes           |
+| `/ping`         | GET    | Health check endpoint    | ❌ No         |
+| `/login`        | POST   | Login and get token pair | ❌ No         |
+| `/refresh`      | POST   | Refresh token pair       | ✅ Yes        |
+| `/logout`       | POST   | Invalidate token pair    | ✅ Yes        |
+| `/authenticate` | GET    | Validate access token    | ✅ Yes        |
 
-## Quick Start
+## 🚀 Quick Start
 
-### Prerequisites
+### 📋 Prerequisites
 
-- Docker
-- Docker Compose
+- 🐳 **Docker**
+- 🛠️ **Docker Compose**
 
-### Scaling
+### ⚖️ Scaling
 
 The service supports horizontal scaling through Docker's built-in DNS-based load balancing:
 
@@ -59,38 +59,38 @@ docker compose up --build --scale jwt=5
 
 This command will:
 
-- Start 5 instances of the JWT service
-- Register them with Docker's DNS service
-- Enable automatic load balancing through Docker's embedded DNS server
-- Maintain shared state through Redis
+- 🏃‍♂️ Start 5 instances of the JWT service
+- 🌐 Register them with Docker's DNS service
+- 🔄 Enable automatic load balancing through Docker's embedded DNS server
+- 💾 Maintain shared state through Redis
 
-The load balancing is handled by Docker's internal DNS resolver, which automatically distributes requests across all containers of the JWT service using round-robin DNS resolution. NGINX acts only as a reverse proxy, forwarding requests to the Docker DNS service which then routes them to the appropriate JWT service instance.
+NGINX acts as a reverse proxy, forwarding requests to the Docker DNS service, which routes them to the appropriate JWT service instance.
 
-### Running Locally
+### 🏃‍♂️ Running Locally
 
-1. Clone the repository
+1. **Clone the repository**
 
-```bash
-git clone https://github.com/GregoryKogan/jwt-microservice.git
-cd jwt-microservice
-```
+   ```bash
+   git clone https://github.com/GregoryKogan/jwt-microservice.git
+   cd jwt-microservice
+   ```
 
-2. Choose a startup option:
+2. **Choose a startup option:**
 
-#### Single Instance
+#### 🚀 Single Instance
 
 ```bash
 docker compose up --build
 ```
 
-#### Multiple Instances (Scaled)
+#### ⚖️ Multiple Instances (Scaled)
 
 ```bash
 # Start 5 instances with load balancing
 docker compose up --build --scale jwt=5
 ```
 
-#### Development Mode
+#### 🛠️ Development Mode
 
 ```bash
 # Live-reloading for single instance
@@ -100,9 +100,9 @@ docker compose up --build --watch
 docker compose up --build --watch --scale jwt=3
 ```
 
-The service will be available at `http://localhost:4000`.
+The service will be available at **`http://localhost:4000`**.
 
-### Configuration
+### ⚙️ Configuration
 
 The service is configured via `config.yml`:
 
@@ -125,7 +125,7 @@ auth:
   auto_logout: 24h
 ```
 
-### Testing
+### ✅ Testing
 
 Run all tests with cache mocking:
 
@@ -133,7 +133,7 @@ Run all tests with cache mocking:
 go test ./... -v
 ```
 
-## Load Testing
+## 📊 Load Testing
 
 Load testing is performed using **Grafana K6**. To execute the load tests with the `load-test` profile, run:
 
@@ -141,7 +141,7 @@ Load testing is performed using **Grafana K6**. To execute the load tests with t
 docker compose --profile load-test up --build --scale jwt=5
 ```
 
-### Load Testing Results
+### 📈 Load Testing Results
 
 | Instances | CPU Limit per Instance | Max Processors | Avg Response Time | RPS  | Error Rate |
 | --------- | ---------------------- | -------------- | ----------------- | ---- | ---------- |
@@ -152,13 +152,21 @@ docker compose --profile load-test up --build --scale jwt=5
 | 16        | 0.5                    | 4              | 15.84ms           | 978  | 0.59%      |
 | 32        | -                      | -              | 91.54ms           | 1031 | 1.81%      |
 
-Charts and graphs are generated on the fly using **xk6**:
+> **Note:** Charts and graphs are generated on the fly using **xk6**. Here's an example of the performance chart:
 
 ![Load Testing Chart Placeholder](#)
 
-## API Usage Examples
+## 🛡️ Security Features
 
-### Login
+- 🔑 **UUID-based token tracking**
+- ❌ **Automatic token invalidation**
+- ⏰ **Configurable token lifetimes**
+- 🔄 **Secure token refresh mechanism**
+- 🕒 **Auto-logout for inactive users**
+
+## 🧩 API Usage Examples
+
+### 🔑 Login
 
 ```bash
 curl -X POST http://localhost:8080/login \
@@ -166,7 +174,7 @@ curl -X POST http://localhost:8080/login \
   -d '{"user_id": 1}'
 ```
 
-### Refresh Token
+### ♻️ Refresh Token
 
 ```bash
 curl -X POST http://localhost:8080/refresh \
@@ -174,36 +182,28 @@ curl -X POST http://localhost:8080/refresh \
   -d '{"refresh": "your-refresh-token"}'
 ```
 
-### Authenticate
+### ✅ Authenticate
 
 ```bash
 curl -X GET http://localhost:8080/authenticate \
   -H "Authorization: Bearer your-access-token"
 ```
 
-### Logout
+### 🚪 Logout
 
 ```bash
 curl -X POST http://localhost:8080/logout \
   -H "Authorization: Bearer your-access-token"
 ```
 
-## Security Features
+## 🤝 Contributing
 
-- UUID-based token tracking
-- Automatic token invalidation
-- Configurable token lifetimes
-- Secure token refresh mechanism
-- Auto-logout for inactive users
+1. **Fork the repository**
+2. **Create your feature branch** (`git checkout -b feature/amazing-feature`)
+3. **Commit your changes** (`git commit -m 'Add amazing feature'`)
+4. **Push to the branch** (`git push origin feature/amazing-feature`)
+5. **Open a Pull Request**
 
-## Contributing
+## 📄 License
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
