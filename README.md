@@ -66,7 +66,7 @@ This command will:
 
 NGINX acts as a reverse proxy, forwarding requests to the Docker DNS service, which routes them to the appropriate JWT service instance.
 
-### 🏃‍♂️ Running Locally
+### 🎯 Running Locally
 
 1. **Clone the repository**
 
@@ -141,6 +141,8 @@ Load testing is performed using **Grafana K6**. To execute the load tests with t
 docker compose --profile load-test up --build --scale jwt=5
 ```
 
+The xk6 dashboard will be available at **`http://localhost:5665`** during load testing.
+
 ### 📈 Load Testing Results
 
 | Instances | CPU Limit per Instance | Max Processors | Avg Response Time | RPS  | Error Rate |
@@ -154,16 +156,24 @@ docker compose --profile load-test up --build --scale jwt=5
 
 > **Note:** Charts and graphs are generated on the fly using **xk6**. Here's an example of the performance chart:
 
-![xk6-chart](https://github.com/user-attachments/assets/73e77aee-91ca-45f1-a0b7-cf20ab32d08d)
-
+<img src="https://github.com/user-attachments/assets/73e77aee-91ca-45f1-a0b7-cf20ab32d08d" alt="xk6-chart" width="75%"/>
 
 ## 🛡️ Security Features
 
 - 🔑 **UUID-based token tracking**
+- 🔄 **Token Rotation Mechanism**
 - ❌ **Automatic token invalidation**
 - ⏰ **Configurable token lifetimes**
 - 🔄 **Secure token refresh mechanism**
 - 🕒 **Auto-logout for inactive users**
+
+### 🔄 Token Rotation Mechanism
+
+The service implements a secure **token rotation mechanism** to enhance security:
+
+- **Single-Use Refresh Tokens:** Each refresh token is valid for only one use. Upon using it to obtain a new token pair, the old refresh token is invalidated.
+- **Prevents Replay Attacks:** This mechanism mitigates the risk of replay attacks by ensuring that stolen or leaked refresh tokens cannot be reused.
+- **Seamless User Experience:** Token rotation happens transparently, providing continuous access without requiring the user to re-authenticate.
 
 ## 🧩 API Usage Examples
 
