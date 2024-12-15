@@ -1,4 +1,4 @@
-# JWT Microservice &nbsp; ![License MIT](https://img.shields.io/badge/license-MIT-green) ![Docker Ready](https://img.shields.io/badge/docker-ready-blue) ![Go Version](https://img.shields.io/badge/Go-1.21-blue)
+# JWT Microservice &nbsp; ![License MIT](https://img.shields.io/badge/license-MIT-green) ![Docker Ready](https://img.shields.io/badge/docker-ready-blue)
 
 A high-performance **JWT authentication microservice** written in Go, featuring Redis caching and Docker support.
 
@@ -18,13 +18,13 @@ A high-performance **JWT authentication microservice** written in Go, featuring 
 ```mermaid
 graph LR
     Client --> NGINX[🔀 NGINX]
-    subgraph 🐳 Docker Network
+    subgraph Docker Network
         NGINX --> DNS[📡 Docker DNS]
         DNS --> JWT1[🟢 JWT Service 1]
         DNS --> JWT2[🟢 JWT Service 2]
         DNS --> JWTn[🟢 JWT Service n]
     end
-    subgraph 📂 Shared State
+    subgraph Shared State
         direction LR
         JWT1 --> Redis[(💾 Redis)]
         JWT2 --> Redis
@@ -154,7 +154,8 @@ docker compose --profile load-test up --build --scale jwt=5
 
 > **Note:** Charts and graphs are generated on the fly using **xk6**. Here's an example of the performance chart:
 
-![Load Testing Chart Placeholder](#)
+![xk6-chart](https://github.com/user-attachments/assets/73e77aee-91ca-45f1-a0b7-cf20ab32d08d)
+
 
 ## 🛡️ Security Features
 
