@@ -133,6 +133,29 @@ Run all tests with cache mocking:
 go test ./... -v
 ```
 
+## Load Testing
+
+Load testing is performed using **Grafana K6**. To execute the load tests with the `load-test` profile, run:
+
+```bash
+docker compose --profile load-test up --build --scale jwt=5
+```
+
+### Load Testing Results
+
+| Instances | CPU Limit per Instance | Max Processors | Avg Response Time | RPS  | Error Rate |
+| --------- | ---------------------- | -------------- | ----------------- | ---- | ---------- |
+| 1         | 0.1                    | 1              | 895.21ms          | 974  | 72.51%     |
+| 2         | 0.1                    | 1              | 274.59ms          | 1097 | 53.54%     |
+| 4         | 0.2                    | 2              | 8.07ms            | 1163 | 0.39%      |
+| 8         | 0.25                   | 2              | 6.7ms             | 1154 | 0.21%      |
+| 16        | 0.5                    | 4              | 15.84ms           | 978  | 0.59%      |
+| 32        | -                      | -              | 91.54ms           | 1031 | 1.81%      |
+
+Charts and graphs are generated on the fly using **xk6**:
+
+![Load Testing Chart Placeholder](#)
+
 ## API Usage Examples
 
 ### Login

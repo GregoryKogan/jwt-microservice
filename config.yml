@@ -1,7 +1,6 @@
 server:
   port: 8080
   max_processors: 2 # sets GOMAXPROCS
-
 logging:
   # available modes: text, json
   mode: text

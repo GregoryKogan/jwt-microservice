@@ -23,7 +23,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.50'
+          cpus: '0.25'
 
   cache:
     container_name: jwt-cache
@@ -37,7 +37,6 @@ services:
       timeout: 5s
       retries: 10
       start_period: 5s
-
   nginx:
     container_name: jwt-nginx
     restart: unless-stopped
@@ -48,7 +47,32 @@ services:
       - jwt
     ports:
       - "4000:4000"
-
+  k6:
+    container_name: jwt-k6
+    build:
+      context: ./load-tests
+      dockerfile: Dockerfile.k6
+    volumes:
+      - ./load-tests:/tests
+      - ./load-test-output:/output
+    environment:
+      - K6_DASHBOARD=true
+      - K6_DASHBOARD_PORT=5665
+      - K6_DASHBOARD_HOST=0.0.0.0
+    ports:
+      - "5665:5665"
+    command: run --out dashboard /tests/test.js
+    depends_on:
+      jwt:
+        condition: service_started
+      nginx:
+        condition: service_started
+      cache:
+        condition: service_healthy
+    profiles:
+      - load-test
+    networks:
+      - default
 secrets:
   jwt_key:
     file: ./secrets/jwt_key.txt
